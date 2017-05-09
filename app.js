@@ -59,8 +59,7 @@ router.options('/*', function(req, res) {
 
 var rp = require('request-promise');
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/test)
-router.get('/test', function(req, res) {
+router.get('/login', function(req, res) {
   console.log('test route called');
   var options = {
     method: 'POST',
@@ -69,32 +68,39 @@ router.get('/test', function(req, res) {
       username: '8445971754',
       password: 'broadsoft123'
     },
-    json: true // Automatically parses the JSON string in the response
+    json: true
   };
 
   rp(options)
     .then(function (response) {
         console.log('output body', response.response);
+        session.key = response.response;
         return res.send(response.response);
-    //     $ curl https://api.zipwhip.com/message/send \
-    // -d session=3d0f1dde-aaff-4ce8-b61a-af212a860abc:123456789
-    // -d --data-urlencode contacts='+18559479447'
-    // -d --data-urlencode body='Hello World, from Zipwhip!'
     })
     .catch(function (err) {
       return res.send(500, err);
-
-        // API call failed...
     });
+});
 
-// $ curl –X POST https://api.zipwhip.com/user/login \
-//     -d username=[phone number] \
-//     -d password=[account password]
-// {
-//   "success":true,
-//   "response":"3d0f1dde-aaff-4ce8-b61a-af212a860abc:123456789"
+router.post('/sendMessage/:number', function(req, res) {
+  var options = {
+    method: 'POST',
+    uri: 'https://api.zipwhip.com/message/send',
+    form: {
+      session: session.key,
+      contacts: req.params.number,
+      body: req.body.message
+    },
+    json: true
+  };
 
-
+  rp(options)
+    .then(function (response) {
+        return res.send(200);
+    })
+    .catch(function (err) {
+      return res.send(500, err);
+    });
 });
 
 // =============================================================================
