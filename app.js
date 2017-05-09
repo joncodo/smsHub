@@ -17,12 +17,12 @@ app.use(session({
 }))
 
 // You will need to enable cors in order to receive request from our servers
-app.use(cors({
-  "origin": "https://hub-sandbox.broadsoftlabs.com:8443",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": true,
-  "credentials": true
-}));
+// app.use(cors({
+//   "origin": "https://hub-sandbox.broadsoftlabs.com:8443",
+//   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   "preflightContinue": true,
+//   "credentials": true
+// }));
 
 // If you are doing REST apis, you will need the body-parser to parse response bodies
 var bodyParser = require('body-parser');
