@@ -11,10 +11,9 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
-    "cors": "^2.8.1",
     "express": "^4.14.0",
-    "express-session": "^1.15.2",
     "fs": "0.0.1-security",
+    "mongodb": "^2.2.26",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   },

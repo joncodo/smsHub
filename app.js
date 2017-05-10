@@ -1,28 +1,12 @@
 var fs = require('fs');
-var cors = require('cors');
 var express = require('express');
 var app = express();
 var rp = require('request-promise');
 var cookieParser = require('cookie-parser')
-var session = require('express-session')
 
 // =============================================================================
 // Express app configuration
 // =============================================================================
-
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}))
-
-// You will need to enable cors in order to receive request from our servers
-app.use(cors({
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": true,
-  "credentials": true
-}));
 
 // If you are doing REST apis, you will need the body-parser to parse response bodies
 var bodyParser = require('body-parser');
@@ -46,36 +30,34 @@ var port = process.env.PORT || 8080; // set our port
 // Enable the request router
 var router = express.Router();
 
-// This is required to interface with the Hub api
-router.options('/*', function(req, res) {
-  res.send(200, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCALENDAR,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE');
-});
-
 // =============================================================================
 // ROUTES FOR OUR API
 // They currently also need /youAppName in them. We use :appName in the routes so that you can call your app anything you want in the dev portal
 // =============================================================================
 
-
 var rp = require('request-promise');
+var db = require('./db.js');
 
 router.get('/login', function(req, res) {
   console.log('test route called');
+  var username = '8445971754';
+  var password = 'broadsoft123';
+
   var options = {
     method: 'POST',
     uri: 'https://api.zipwhip.com/user/login',
     form: {
-      username: '8445971754',
-      password: 'broadsoft123'
+      username: username,
+      password: password
     },
     json: true
   };
 
   rp(options)
     .then(function (response) {
-        console.log('output body', response.response);
-        session.key = response.response;
-        return res.send(response.response);
+        // save the zipwhip session for future use
+        db.createUser(username, response.response, undefined);
+        return res.send(200);
     })
     .catch(function (err) {
       return res.send(500, err);
@@ -83,24 +65,30 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/sendMessage/:number', function(req, res) {
-  var options = {
-    method: 'POST',
-    uri: 'https://api.zipwhip.com/message/send',
-    form: {
-      session: session.key,
-      contacts: req.params.number,
-      body: req.body.message
-    },
-    json: true
-  };
+  var username = req.body.from;
+  var number = req.body.to;
+  var message = req.body.message;
 
-  rp(options)
-    .then(function (response) {
-        return res.send(200);
-    })
-    .catch(function (err) {
-      return res.send(500, err);
-    });
+  db.getUser(username).then(function(user) {
+    var options = {
+      method: 'POST',
+      uri: 'https://api.zipwhip.com/message/send',
+      form: {
+        session: user[0].session,
+        contacts: number,
+        body: message
+      },
+      json: true
+    };
+
+    rp(options)
+      .then(function (response) {
+          return res.send(200);
+      })
+      .catch(function (err) {
+        return res.send(500, err);
+      });
+  })
 });
 
 //Install the webhook in order to receive it
