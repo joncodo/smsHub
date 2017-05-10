@@ -104,7 +104,7 @@ router.post('/sendMessage/:number', function(req, res) {
 });
 
 //Install the webhook in order to receive it
-router.get('/createWebhook', function(req, res) {
+router.get('/createWebhook?url=https://young-basin-29738.herokuapp.com/zipwhip/api/receive', function(req, res) {
   var options = {
     method: 'POST',
     uri: 'https://api.zipwhip.com/webhook/add',
@@ -112,7 +112,7 @@ router.get('/createWebhook', function(req, res) {
       session: session.key,
       type: 'message',
       event: 'receive',
-      url: 'https://young-basin-29738.herokuapp.com/zipwhip/api/receive',
+      url: req.query.url,
       method: 'POST'
     },
     json: true
@@ -127,19 +127,15 @@ router.get('/createWebhook', function(req, res) {
     });
 });
 
+//Install the webhook in order to receive it
+router.get('/getCountForUser', function(req, res) {
+  return res.send(200, '11');
+});
+
 router.post('/zipwhip/api/receive', function(req, res) {
   console.log(req.body);
   return res.send(200, req.body.body);
 });
-
-// curl -X POST https://api.zipwhip.com/webhook/add \
-//        -d session=[sessionKey] \
-//        -d type=message \
-//        -d event=receive \
-//        -d url=https://test.zipwhip.com/message/receive \
-//        -d method=POST
-
-
 
 // =============================================================================
 // REGISTER OUR ROUTES -------------------------------
