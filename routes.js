@@ -46,7 +46,7 @@ router.post('/login', function(req, res) {
     });
 });
 
-router.post('/sendMessage/:number', function(req, res) {
+router.post('/sendMessage', function(req, res) {
   errorHandler(req, res, 'from');
   errorHandler(req, res, 'to');
   errorHandler(req, res, 'message');
