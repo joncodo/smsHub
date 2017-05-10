@@ -52,7 +52,7 @@ router.post('/login', function(req, res) {
         var hubAppOptions = {
           method: 'POST',
           uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/login',
-          body: {
+          form: {
             token: hubLoginToken
           },
           json: true
