@@ -129,7 +129,7 @@ router.get('/createWebhook', function(req, res) {
 
 router.post('/zipwhip/api/receive', function(req, res) {
   console.log(req.body);
-  return res.send(200);
+  return res.send(200, req.body.body);
 });
 
 // curl -X POST https://api.zipwhip.com/webhook/add \
