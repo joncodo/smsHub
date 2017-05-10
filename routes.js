@@ -51,7 +51,7 @@ router.post('/login', function(req, res) {
         // ==============================
         var hubAppOptions = {
           method: 'POST',
-          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/login?token=' + hubLoginToken,
+          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/login?token=' + encodeURIComponent(hubLoginToken),
           json: true
         };
         rp(hubAppOptions)
@@ -127,8 +127,6 @@ router.post('/createWebhook', function(req, res) {
 // Get the number of messages for a user to all other users that are unread
 router.get('/getCountForUser', function(req, res) {
   var hubloginToken = req.query.token;
-  //TODO hack
-  return res.send(200, {count: 11});
 
   db.getUnreadForUser(hubloginToken).then(function(count) {
     return res.send(200, {count: count});
