@@ -56,7 +56,8 @@ router.post('/login', function(req, res) {
         };
         rp(hubAppOptions)
           .then(function (response) {
-            return res.send(200);
+            console.log('auth response: ', response);
+            return res.redirect(response.url);
           });
     })
     .catch(function (err) {
