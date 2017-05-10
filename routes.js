@@ -62,7 +62,7 @@ router.post('/login', function(req, res) {
         rp(hubAppOptions)
           .then(function (response) {
             console.log('auth response: ', response);
-            return res.redirect('https://www.google.com');
+            return res.redirect('/foo/bar');
           });
     })
     .catch(function (err) {
