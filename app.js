@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //8080 is the default port for heroku but you can use any port you wish
-var port = 8080;
+var port = process.env.PORT || 8080;
 
 var routes = require('./routes.js');
 app.use(routes);
