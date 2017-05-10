@@ -43,6 +43,9 @@ module.exports = {
 
         var collection = db.collection('user')
         collection.find({hubLoginToken: hubLoginToken}).toArray(function(err, users) {
+          if(users.length < 1){
+            return res.send(200, {count: 0});
+          }
           var username = users[0].username;
 
           var collection = db.collection('message')
