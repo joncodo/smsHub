@@ -109,27 +109,28 @@ router.post('/createWebhook', function(req, res) {
   var url = req.body.url;
   var username = req.body.username;
 
-  var options = {
-    method: 'POST',
-    uri: 'https://api.zipwhip.com/webhook/add',
-    form: {
-      //FIXME
-      session: session.key,
-      type: 'message',
-      event: 'receive',
-      url: url,
-      method: 'POST'
-    },
-    json: true
-  };
+  db.getUser(username).then(function(user) {
+    var options = {
+      method: 'POST',
+      uri: 'https://api.zipwhip.com/webhook/add',
+      form: {
+        session: user[0].session,
+        type: 'message',
+        event: 'receive',
+        url: url,
+        method: 'POST'
+      },
+      json: true
+    };
 
-  rp(options)
-    .then(function (response) {
-        return res.send(200);
-    })
-    .catch(function (err) {
-      return res.send(500, err);
-    });
+    rp(options)
+      .then(function (response) {
+          return res.send(200);
+      })
+      .catch(function (err) {
+        return res.send(500, err);
+      });
+  });
 });
 
 // Get the number of messages for a user to all other users that are unread
