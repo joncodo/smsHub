@@ -36,6 +36,21 @@ module.exports = {
     });
   },
 
+  getUnreadForUser: function(hubLoginToken) {
+    return new Promise(function(resolve, reject) {
+      MongoClient.connect(URL, function(err, db) {
+        if (err) return
+
+        var collection = db.collection('message')
+        collection.find({hubLoginToken: hubLoginToken, isRead: false}).toArray(function(err, result) {
+          if (err) console.log(err.message);
+          db.close()
+          resolve(result.length);
+        });
+      });
+    });
+  },
+
   createUser: function(username, session, hubLoginToken) {
     MongoClient.connect(URL, function(err, db) {
       if (err) return

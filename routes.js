@@ -108,7 +108,10 @@ router.post('/createWebhook', function(req, res) {
 
 // Get the number of messages for a user to all other users that are unread
 router.get('/getCountForUser', function(req, res) {
-  return res.send(200, {count: '11'});
+  var hubloginToken = req.query.token;
+  db.getUnreadForUser(hubloginToken).then(function(count) {
+    return res.send(200, {count: count});
+  });
 });
 
 // Get the messages between two users
@@ -120,8 +123,6 @@ router.get('/getMessages', function(req, res) {
     return res.send(200, messages);
   });
 });
-
-
 
 // Only used for testing
 router.post('/zipwhip/api/receive', function(req, res) {
