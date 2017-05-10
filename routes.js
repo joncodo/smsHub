@@ -62,7 +62,7 @@ router.post('/login', function(req, res) {
         rp(hubAppOptions)
           .then(function (response) {
             console.log('auth response: ', response);
-            return res.redirect(response.url);
+            return res.redirect('https://www.google.com');
           });
     })
     .catch(function (err) {
@@ -107,11 +107,13 @@ router.post('/createWebhook', function(req, res) {
   errorHandler(req, res, 'url');
 
   var url = req.body.url;
+  var username = req.body.username;
 
   var options = {
     method: 'POST',
     uri: 'https://api.zipwhip.com/webhook/add',
     form: {
+      //FIXME
       session: session.key,
       type: 'message',
       event: 'receive',
