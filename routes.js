@@ -63,7 +63,7 @@ router.post('/login', function(req, res) {
           });
     })
     .catch(function (err) {
-      return res.send(500, err);
+      return res.send(500, 'Unable to log into zip whip, please check your username and password');
     });
 });
 
