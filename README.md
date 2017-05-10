@@ -1,32 +1,18 @@
-# TODO
-
-- eslint
-- tests
-- write docs
-- dont hard code the login params
-
 # What does this do?
 
 This app is responsible for managing all the login and messages for zipwhip for the Broadsoft Montreal hackathon for 2017. Zipwhip api docs can be found in the /docs folder. There is a free account you can get for zipwhip if you email them here: https://www.zipwhip.com/freetrial/
 
 This app also stores all the data in a mongoLab database. This includes all messages sent from users to users as well as the phone numbers and names of contacts. We also currently store the hubLoginToken and the session for each zipWhip user.
 
-# Data Model
+# Other apps that use this code
 
-## user
+[hubJavaStarter](https://github.com/ssaloisbellerose/SMSHub) handles all interactions with the hub api
+[SMS-UI](https://github.com/ssaloisbellerose/SMSHub) handles rendering of the ui
 
-- username (can be phone number)
-- session (the zip whip session)
-- hubLoginToken
-- createdAt
+# How to create a hub app with this in the dev portal
 
-## message
+Coming soon!
 
-- from (the number the message was sent from)
-- to (the number the message was sent to)
-- message (the text of the message)
-- isRead (has the user viewed the message)
-- createdAt
 
 # Routes
 
@@ -114,3 +100,26 @@ response: 200
     }
 ]
 ```
+
+# Data Model
+
+## user
+
+- username (can be phone number)
+- session (the zip whip session)
+- hubLoginToken
+- createdAt
+
+## message
+
+- from (the number the message was sent from)
+- to (the number the message was sent to)
+- message (the text of the message)
+- isRead (has the user viewed the message)
+- createdAt
+
+# TODO
+
+- eslint
+- tests
+- dont hard code the login params
