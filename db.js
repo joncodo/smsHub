@@ -41,11 +41,16 @@ module.exports = {
       MongoClient.connect(URL, function(err, db) {
         if (err) return
 
-        var collection = db.collection('message')
-        collection.find({hubLoginToken: hubLoginToken, isRead: false}).toArray(function(err, result) {
-          if (err) console.log(err.message);
-          db.close()
-          resolve(result.length);
+        var collection = db.collection('user')
+        collection.find({hubLoginToken: hubLoginToken}).toArray(function(err, users) {
+          var username = users[0].username;
+
+          var collection = db.collection('message')
+          collection.find({from: username, isRead: false}).toArray(function(err, result) {
+            if (err) console.log(err.message);
+            db.close()
+            resolve(result.length);
+          });
         });
       });
     });
