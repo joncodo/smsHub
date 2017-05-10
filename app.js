@@ -129,7 +129,7 @@ router.get('/createWebhook?url=https://young-basin-29738.herokuapp.com/zipwhip/a
 
 //Install the webhook in order to receive it
 router.get('/getCountForUser', function(req, res) {
-  return res.send(200, '11');
+  return res.send(200, {count: '11'});
 });
 
 router.post('/zipwhip/api/receive', function(req, res) {
