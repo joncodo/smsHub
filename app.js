@@ -6,9 +6,19 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var rp = require('request-promise');
+var cors = require('cors');
+
 
 // If you are doing REST apis, you will need the body-parser to parse response bodies
 var bodyParser = require('body-parser');
+
+// You will need to enable cors in order to receive request from our servers
+app.use(cors({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": true,
+  "credentials": true
+}));
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST

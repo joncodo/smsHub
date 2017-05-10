@@ -14,6 +14,11 @@ var errorHandler = function(req, res, prop) {
     return res.send(500, 'You must send a ' + prop + ' in the post body')
   }
 }
+
+router.options('/*', function(req, res) {
+  res.send(200, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCALENDAR,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE');
+});
+
 router.get('/test', function(req, res) {
   return res.send(200, 'Hello!');
 });
@@ -40,7 +45,22 @@ router.post('/login', function(req, res) {
     .then(function (response) {
         // save the zipwhip session for future use
         db.createUser(username, response.response, hubLoginToken);
-        return res.send(200);
+
+        // ==============================
+        // Post to simons java app
+        // ==============================
+        var hubAppOptions = {
+          method: 'POST',
+          uri: 'https://tranquil-refuge-57483.herokuapp.com/',
+          body: {
+            token: hubLoginToken
+          },
+          json: true
+        };
+        rp(hubAppOptions)
+          .then(function (response) {
+            return res.send(200);
+          });
     })
     .catch(function (err) {
       return res.send(500, err);
