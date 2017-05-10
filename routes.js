@@ -51,7 +51,7 @@ router.post('/login', function(req, res) {
         // ==============================
         var hubAppOptions = {
           method: 'POST',
-          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/login?token=' + encodeURIComponent(hubLoginToken),
+          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/javalogin?token=' + encodeURIComponent(hubLoginToken),
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
