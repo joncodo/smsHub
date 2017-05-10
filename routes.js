@@ -24,6 +24,7 @@ router.post('/login', function(req, res) {
 
   var username = req.body.username;
   var password = req.body.password;
+  var hubLoginToken = req.body.hubLoginToken;
 
   var options = {
     method: 'POST',
@@ -38,7 +39,7 @@ router.post('/login', function(req, res) {
   rp(options)
     .then(function (response) {
         // save the zipwhip session for future use
-        db.createUser(username, response.response, undefined);
+        db.createUser(username, response.response, hubLoginToken);
         return res.send(200);
     })
     .catch(function (err) {

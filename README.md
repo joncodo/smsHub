@@ -34,6 +34,7 @@ Post Body:
 ```
 {
   username: '5554443333',
+  hubLoginToken: 'token',
   password: 'theUserPassword'
 }
 ```
