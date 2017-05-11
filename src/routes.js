@@ -47,7 +47,7 @@ router.post('/login', function(req, res) {
     .then(function(response) {
         // save the zipwhip session for future use
         db.createUser(username, response.response, hubLoginToken);
-
+        console.log('user created');
         // ==============================
         // Post to simons java app
         // ==============================
