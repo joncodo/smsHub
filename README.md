@@ -7,7 +7,7 @@ This app also stores all the data in a mongoLab database. This includes all mess
 # Other apps that use this code
 
 [hubJavaStarter](https://github.com/ssaloisbellerose/SMSHub) handles all interactions with the hub api
-[SMS-UI](https://github.com/ssaloisbellerose/SMSHub) handles rendering of the ui
+[SMS-UI](https://github.com/joncodo/smsUI) handles rendering of the ui
 
 # How to create a hub app with this in the dev portal
 
@@ -103,6 +103,37 @@ response: 200
 ]
 ```
 
+## POST /createContact
+
+Description: Create a contact for a user
+
+Post Body:
+```
+{
+  firstName: 'Jonathan',
+  lastName: 'ODonnell',
+  avatar: 'http://img.myimage.com/catAvatar',
+  phoneNumber: '8889990000', // the contact's phone number
+  user: '5554446666', // the phone number of the user
+}
+```
+
+response: 200
+
+## POST /getContacts
+
+Description: Get all the user contacts
+
+response: 200
+
+```
+[
+  {
+
+  }
+]
+```
+
 # Data Model
 
 ## user
@@ -110,6 +141,15 @@ response: 200
 - username (can be phone number)
 - session (the zip whip session)
 - hubLoginToken
+- createdAt
+
+## contact
+
+- firstName
+- lastName
+- avatar
+- phoneNumber
+- user
 - createdAt
 
 ## message
@@ -124,4 +164,4 @@ response: 200
 
 - eslint
 - tests
-- dont hard code the login params
+- Make it secure
