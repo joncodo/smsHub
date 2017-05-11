@@ -2,18 +2,17 @@
 // ROUTES FOR OUR API
 // They currently also need /youAppName in them. We use :appName in the routes so that you can call your app anything you want in the dev portal
 // =============================================================================
-
-var rp = require('request-promise');
-var db = require('./db.js');
-var express = require('express');
+const express = require('express');
+const rp = require('request-promise');
+const db = require('./db.js');
 
 // Enable the request router
-var router = express.Router();
-var errorHandler = function(req, res, prop) {
-  if(!req.body[prop]){
-    return res.send(500, 'You must send a ' + prop + ' in the post body')
+const router = express.Router();
+const errorHandler = function(req, res, prop) {
+  if (!req.body[prop]) {
+    return res.send(500, 'You must send a ' + prop + ' in the post body');
   }
-}
+};
 
 router.options('/*', function(req, res) {
   res.send(200, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCALENDAR,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE');
@@ -27,11 +26,11 @@ router.post('/login', function(req, res) {
   errorHandler(req, res, 'username');
   errorHandler(req, res, 'password');
 
-  var username = req.body.username;
-  var password = req.body.password;
-  var hubLoginToken = req.body.hubLoginToken;
+  const username = req.body.username;
+  const password = req.body.password;
+  const hubLoginToken = req.body.hubLoginToken;
 
-  var options = {
+  const options = {
     method: 'POST',
     uri: 'https://api.zipwhip.com/user/login',
     form: {
@@ -42,16 +41,16 @@ router.post('/login', function(req, res) {
   };
 
   rp(options)
-    .then(function (response) {
+    .then(function(response) {
         // save the zipwhip session for future use
         db.createUser(username, response.response, hubLoginToken);
 
         // ==============================
         // Post to simons java app
         // ==============================
-        var hubAppOptions = {
+        const hubAppOptions = {
           method: 'POST',
-          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/javalogin?token=' + encodeURIComponent(hubLoginToken),
+          uri: 'https://tranquil-refuge-57483.herokuapp.com/SMSHub/javalogin?token=' + encodeURIComponent(hubLoginToken) + '&number=' + username,
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
@@ -60,12 +59,12 @@ router.post('/login', function(req, res) {
           json: true
         };
         rp(hubAppOptions)
-          .then(function (response) {
+          .then(function(response) {
             console.log('auth response: ', response);
             return res.send(response);
           });
     })
-    .catch(function (err) {
+    .catch(function(err) {
       return res.send(500, 'Unable to log into zip whip, please check your username and password');
     });
 });
@@ -75,12 +74,12 @@ router.post('/sendMessage', function(req, res) {
   errorHandler(req, res, 'to');
   errorHandler(req, res, 'message');
 
-  var from = req.body.from;
-  var to = req.body.to;
-  var message = req.body.message;
+  const from = req.body.from;
+  const to = req.body.to;
+  const message = req.body.message;
 
   db.getUser(from).then(function(user) {
-    var options = {
+    const options = {
       method: 'POST',
       uri: 'https://api.zipwhip.com/message/send',
       form: {
@@ -92,25 +91,25 @@ router.post('/sendMessage', function(req, res) {
     };
 
     rp(options)
-      .then(function (response) {
+      .then(function(response) {
           db.createMessage(from, to, message);
           return res.send(200);
       })
-      .catch(function (err) {
+      .catch(function(err) {
         return res.send(500, err);
       });
-  })
+  });
 });
 
-//Install the webhook in order to receive it
+// Install the webhook in order to receive it
 router.post('/createWebhook', function(req, res) {
   errorHandler(req, res, 'url');
 
-  var url = req.body.url;
-  var username = req.body.username;
+  const url = req.body.url;
+  const username = req.body.username;
 
   db.getUser(username).then(function(user) {
-    var options = {
+    const options = {
       method: 'POST',
       uri: 'https://api.zipwhip.com/webhook/add',
       form: {
@@ -124,10 +123,10 @@ router.post('/createWebhook', function(req, res) {
     };
 
     rp(options)
-      .then(function (response) {
+      .then(function(response) {
           return res.send(200);
       })
-      .catch(function (err) {
+      .catch(function(err) {
         return res.send(500, err);
       });
   });
@@ -135,7 +134,7 @@ router.post('/createWebhook', function(req, res) {
 
 // Get the number of messages for a user to all other users that are unread
 router.get('/getCountForUser', function(req, res) {
-  var hubloginToken = req.query.token;
+  const hubloginToken = req.query.token;
 
   db.getUnreadForUser(hubloginToken).then(function(count) {
     return res.send(200, {count: count});
@@ -144,11 +143,29 @@ router.get('/getCountForUser', function(req, res) {
 
 // Get the messages between two users
 router.get('/getMessages', function(req, res) {
-  var from = req.query.from;
-  var to = req.query.to;
+  const from = req.query.from;
+  const to = req.query.to;
 
   db.getMessages(from, to).then(function(messages) {
     return res.send(200, messages);
+  });
+});
+
+// create a contact for a user
+router.post('/contact', function(req, res) {
+  errorHandler(req, res, 'firstName');
+  errorHandler(req, res, 'lastName');
+  errorHandler(req, res, 'phoneNumber');
+  errorHandler(req, res, 'username');
+
+  db.createContact(req.body.firstName, req.body.lastName, req.body.avatar, req.body.phoneNumber, req.body.username);
+  return res.send(200);
+});
+
+// get all the contacts for a user
+router.get('/contacts', function(req, res) {
+  db.getContacts(req.query.username).then(function(contacts) {
+    return res.send(200, contacts);
   });
 });
 
@@ -157,7 +174,6 @@ router.post('/zipwhip/api/receive', function(req, res) {
   console.log(req.body);
   return res.send(200, req.body.body);
 });
-
 
 
 module.exports = router;

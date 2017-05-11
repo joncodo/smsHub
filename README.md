@@ -103,7 +103,7 @@ response: 200
 ]
 ```
 
-## POST /createContact
+## POST /contact
 
 Description: Create a contact for a user
 
@@ -112,7 +112,7 @@ Post Body:
 {
   firstName: 'Jonathan',
   lastName: 'ODonnell',
-  avatar: 'http://img.myimage.com/catAvatar',
+  avatar: 'http://img.myimage.com/catAvatar', (optional)
   phoneNumber: '8889990000', // the contact's phone number
   username: '5554446666', // the phone number of the user
 }
@@ -120,7 +120,7 @@ Post Body:
 
 response: 200
 
-## POST /getContacts
+## GET /contacts?username=8885556666
 
 Description: Get all the user contacts
 
@@ -128,9 +128,30 @@ response: 200
 
 ```
 [
-  {
-    
-  }
+    {
+        "_id": "59148fec778a8f77b848790c",
+        "firstName": "Jon",
+        "lastName": "ODonnell",
+        "avatar": "",
+        "phoneNumber": "7778889999",
+        "username": "8885556666"
+    },
+    {
+        "_id": "591490229c3b75780aaffbf0",
+        "firstName": "Jon",
+        "lastName": "ODonnell",
+        "avatar": "",
+        "phoneNumber": "7778889999",
+        "username": "8885556666"
+    },
+    {
+        "_id": "591490317cd06f783e441d75",
+        "firstName": "Jon",
+        "lastName": "ODonnell",
+        "avatar": "",
+        "phoneNumber": "7778889999",
+        "username": "8885556666"
+    }
 ]
 ```
 
@@ -162,6 +183,6 @@ response: 200
 
 # TODO
 
-- eslint
 - tests
 - Make it secure
+- make all db calls return promises

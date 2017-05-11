@@ -1,13 +1,13 @@
-var MongoClient = require('mongodb').MongoClient
+const MongoClient = require('mongodb').MongoClient;
 
-var URL = require('./config.json').dbUrl;
+const URL = require('../config/config.json').dbUrl;
 
 module.exports = {
   createContact: function(firstName, lastName, avatar, phoneNumber, username) {
     MongoClient.connect(URL, function(err, db) {
-      if (err) return
+      if (err) return;
 
-      var collection = db.collection('contact');
+      const collection = db.collection('contact');
       collection.insert({
         firstName: firstName,
         lastName: lastName,
@@ -16,20 +16,20 @@ module.exports = {
         username: username
       }, function(err, result) {
         if (err) console.log(err);
-        db.close()
-      })
-    })
+        db.close();
+      });
+    });
   },
 
   getContacts: function(username) {
     return new Promise(function(resolve, reject) {
       MongoClient.connect(URL, function(err, db) {
-        if (err) return
+        if (err) return;
 
-        var collection = db.collection('contact');
+        const collection = db.collection('contact');
         collection.find({username: username}).toArray(function(err, result) {
           if (err) console.log(err.message);
-          db.close()
+          db.close();
           resolve(result);
         });
       });
@@ -38,9 +38,9 @@ module.exports = {
 
   createMessage: function(from, to, message) {
     MongoClient.connect(URL, function(err, db) {
-      if (err) return
+      if (err) return;
 
-      var collection = db.collection('message')
+      const collection = db.collection('message');
       collection.insert({
         from: from,
         to: to,
@@ -49,20 +49,20 @@ module.exports = {
         createdAt: new Date()
       }, function(err, result) {
         if (err) console.log(err);
-        db.close()
-      })
-    })
+        db.close();
+      });
+    });
   },
 
   getMessages: function(from, to) {
     return new Promise(function(resolve, reject) {
       MongoClient.connect(URL, function(err, db) {
-        if (err) return
+        if (err) return;
 
-        var collection = db.collection('message')
+        const collection = db.collection('message');
         collection.find({from: from, to: to}).toArray(function(err, result) {
           if (err) console.log(err.message);
-          db.close()
+          db.close();
           resolve(result);
         });
       });
@@ -72,19 +72,19 @@ module.exports = {
   getUnreadForUser: function(hubLoginToken) {
     return new Promise(function(resolve, reject) {
       MongoClient.connect(URL, function(err, db) {
-        if (err) return
+        if (err) return;
 
-        var collection = db.collection('user')
+        const collection = db.collection('user');
         collection.find({hubLoginToken: hubLoginToken}).toArray(function(err, users) {
-          if(users.length < 1){
+          if (users.length < 1) {
             return 0;
           }
-          var username = users[0].username;
+          const username = users[0].username;
 
-          var collection = db.collection('message')
+          const collection = db.collection('message');
           collection.find({from: username, isRead: false}).toArray(function(err, result) {
             if (err) console.log(err.message);
-            db.close()
+            db.close();
             resolve(result.length);
           });
         });
@@ -94,9 +94,9 @@ module.exports = {
 
   createUser: function(username, session, hubLoginToken) {
     MongoClient.connect(URL, function(err, db) {
-      if (err) return
+      if (err) return;
 
-      var collection = db.collection('user')
+      const collection = db.collection('user');
       collection.insert({
         username: username,
         session: session,
@@ -104,24 +104,24 @@ module.exports = {
         createdAt: new Date()
       }, function(err, result) {
         if (err) console.log(err.message);
-        db.close()
-      })
-    })
+        db.close();
+      });
+    });
   },
 
   getUser: function(username) {
     console.log('getUserCalled');
     return new Promise(function(resolve, reject) {
       MongoClient.connect(URL, function(err, db) {
-        if (err) return
+        if (err) return;
 
-        var collection = db.collection('user')
+        const collection = db.collection('user');
         collection.find({username: username}).toArray(function(err, result) {
           if (err) console.log(err.message);
-          db.close()
+          db.close();
           resolve(result);
         });
       });
     });
   }
-}
+};
