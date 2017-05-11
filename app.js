@@ -14,7 +14,7 @@ var bodyParser = require('body-parser');
 
 // You will need to enable cors in order to receive request from our servers
 app.use(cors({
-  "origin": ["https://tranquil-refuge-57483.herokuapp.com", "https://zipwhip-frontend.herokuapp.com"],
+  "origin": ["https://tranquil-refuge-57483.herokuapp.com", "https://zipwhip-frontend.herokuapp.com", "https://core.broadsoftlabs.com"],
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
   "preflightContinue": true,
   "credentials": true
