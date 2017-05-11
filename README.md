@@ -114,7 +114,7 @@ Post Body:
   lastName: 'ODonnell',
   avatar: 'http://img.myimage.com/catAvatar',
   phoneNumber: '8889990000', // the contact's phone number
-  user: '5554446666', // the phone number of the user
+  username: '5554446666', // the phone number of the user
 }
 ```
 
@@ -129,7 +129,7 @@ response: 200
 ```
 [
   {
-
+    
   }
 ]
 ```
