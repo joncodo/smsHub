@@ -69,7 +69,7 @@ module.exports = {
     });
   },
 
-  getUnreadForUser: function(usename) {
+  getUnreadForUser: function(username) {
     return new Promise(function(resolve, reject) {
       const collection = db.collection('message');
       collection.find({from: username, isRead: false}).toArray(function(err, result) {
