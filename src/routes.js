@@ -41,6 +41,8 @@ router.post('/login', function(req, res) {
     json: true
   };
 
+  console.log(options);
+
   rp(options)
     .then(function(response) {
         // save the zipwhip session for future use
