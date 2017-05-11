@@ -5,6 +5,7 @@
 const express = require('express');
 const rp = require('request-promise');
 const db = require('./db.js');
+const config = require('../config/config.json');
 
 // Enable the request router
 const router = express.Router();
@@ -134,9 +135,9 @@ router.post('/createWebhook', function(req, res) {
 
 // Get the number of messages for a user to all other users that are unread
 router.get('/getCountForUser', function(req, res) {
-  const hubloginToken = req.query.token;
+  const username = req.query.number;
 
-  db.getUnreadForUser(hubloginToken).then(function(count) {
+  db.getUnreadForUser(username).then(function(count) {
     return res.send(200, {count: count});
   });
 });

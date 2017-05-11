@@ -69,25 +69,13 @@ module.exports = {
     });
   },
 
-  getUnreadForUser: function(hubLoginToken) {
+  getUnreadForUser: function(usename) {
     return new Promise(function(resolve, reject) {
-      MongoClient.connect(URL, function(err, db) {
-        if (err) return;
-
-        const collection = db.collection('user');
-        collection.find({hubLoginToken: hubLoginToken}).toArray(function(err, users) {
-          if (users.length < 1) {
-            return 0;
-          }
-          const username = users[0].username;
-
-          const collection = db.collection('message');
-          collection.find({from: username, isRead: false}).toArray(function(err, result) {
-            if (err) console.log(err.message);
-            db.close();
-            resolve(result.length);
-          });
-        });
+      const collection = db.collection('message');
+      collection.find({from: username, isRead: false}).toArray(function(err, result) {
+        if (err) console.log(err.message);
+        db.close();
+        resolve(result.length);
       });
     });
   },
