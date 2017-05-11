@@ -78,7 +78,7 @@ module.exports = {
         collection.find({from: username, isRead: false}).toArray(function(err, result) {
           if (err) console.log(err.message);
           db.close();
-          resolve(result);
+          resolve(result.length);
         });
       });
     });
