@@ -71,11 +71,15 @@ module.exports = {
 
   getUnreadForUser: function(username) {
     return new Promise(function(resolve, reject) {
-      const collection = db.collection('message');
-      collection.find({from: username, isRead: false}).toArray(function(err, result) {
-        if (err) console.log(err.message);
-        db.close();
-        resolve(result.length);
+      MongoClient.connect(config.dbUrl, function(err, db) {
+        if (err) return;
+
+        const collection = db.collection('message');
+        collection.find({from: username, isRead: false}).toArray(function(err, result) {
+          if (err) console.log(err.message);
+          db.close();
+          resolve(result);
+        });
       });
     });
   },
