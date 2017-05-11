@@ -1,3 +1,4 @@
 {
-  "dbUrl": "mongodb://root:root@ds137271.mlab.com:37271/sms-hub"
+  "dbUrl": "mongodb://root:root@ds137271.mlab.com:37271/sms-hub",
+  "javaApp": "https://tranquil-refuge-57483.herokuapp.com/SMSHub"
 }

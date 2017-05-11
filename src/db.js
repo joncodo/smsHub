@@ -1,10 +1,10 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const URL = require('../config/config.json').dbUrl;
+const config = require('../config/config.json');
 
 module.exports = {
   createContact: function(firstName, lastName, avatar, phoneNumber, username) {
-    MongoClient.connect(URL, function(err, db) {
+    MongoClient.connect(config.dbUrl, function(err, db) {
       if (err) return;
 
       const collection = db.collection('contact');
