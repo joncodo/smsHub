@@ -4,7 +4,7 @@ const config = require('../config/config.json');
 
 module.exports = {
   createContact: function(firstName, lastName, avatar, phoneNumber, username) {
-    MongoClient.connect(config.dbUrl, function(err, db) {
+    MongoClient.connect(config.dbconfig.dbUrl, function(err, db) {
       if (err) return;
 
       const collection = db.collection('contact');
@@ -23,7 +23,7 @@ module.exports = {
 
   getContacts: function(username) {
     return new Promise(function(resolve, reject) {
-      MongoClient.connect(URL, function(err, db) {
+      MongoClient.connect(config.dbUrl, function(err, db) {
         if (err) return;
 
         const collection = db.collection('contact');
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   createMessage: function(from, to, message) {
-    MongoClient.connect(URL, function(err, db) {
+    MongoClient.connect(config.dbUrl, function(err, db) {
       if (err) return;
 
       const collection = db.collection('message');
@@ -56,7 +56,7 @@ module.exports = {
 
   getMessages: function(from, to) {
     return new Promise(function(resolve, reject) {
-      MongoClient.connect(URL, function(err, db) {
+      MongoClient.connect(config.dbUrl, function(err, db) {
         if (err) return;
 
         const collection = db.collection('message');
@@ -81,7 +81,7 @@ module.exports = {
   },
 
   createUser: function(username, session, hubLoginToken) {
-    MongoClient.connect(URL, function(err, db) {
+    MongoClient.connect(config.dbUrl, function(err, db) {
       if (err) return;
 
       const collection = db.collection('user');
@@ -100,7 +100,7 @@ module.exports = {
   getUser: function(username) {
     console.log('getUserCalled');
     return new Promise(function(resolve, reject) {
-      MongoClient.connect(URL, function(err, db) {
+      MongoClient.connect(config.dbUrl, function(err, db) {
         if (err) return;
 
         const collection = db.collection('user');
